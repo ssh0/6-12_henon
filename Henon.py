@@ -4,7 +4,6 @@
 # written by Shotaro Fujimoto, May 2014.
 
 import matplotlib.pylab as plt
-import array
 
 
 class Henon(object):
@@ -25,14 +24,19 @@ class Henon(object):
 
     def calc(self):
         global x, y
-        x = array.array('d')
-        y = array.array('d')
+        x = []
+        y = []
         x.append(self.x0)
         y.append(self.y0)
+        xt = self.x0
+        yt = self.y0
         for n in range(ntransient + nplot):
-            x.append(self.func(x[n], y[n])[0])
-            y.append(self.func(x[n], y[n])[1])
-        return (x[ntransient:ntransient + nplot], y[ntransient:ntransient + nplot])
+            xt1, yt1 = self.func(xt, yt)
+            x.append(xt1)
+            y.append(yt1)
+            xt, yt = xt1, yt1
+        return (x[ntransient:ntransient + nplot],
+                y[ntransient:ntransient + nplot])
 
     def plot_x_and_y(self, x, y, color='blue', showing=True):
         self.margin = 0.1
